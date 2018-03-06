@@ -20,7 +20,7 @@ import org.gradle.internal.logging.OutputSpecification
 import org.gradle.internal.logging.events.OutputEventListener
 import org.gradle.internal.logging.services.LoggingBackedStyledTextOutput
 import org.gradle.internal.operations.CurrentBuildOperationRef
-import org.gradle.internal.progress.BuildOperationState
+import org.gradle.internal.operations.BuildOperationRef
 import org.gradle.internal.time.Clock
 
 import static org.gradle.internal.logging.text.StyledTextOutput.Style.*
@@ -43,7 +43,7 @@ class LoggingBackedStyledTextOutputTest extends OutputSpecification {
 
     def fillsInDetailsOfEvent() {
         given:
-        currentBuildOperationRef.set(new BuildOperationState() {
+        currentBuildOperationRef.set(new BuildOperationRef() {
             @Override
             Object getId() {
                 return 42L

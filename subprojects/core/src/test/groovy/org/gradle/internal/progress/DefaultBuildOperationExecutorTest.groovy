@@ -22,6 +22,7 @@ import org.gradle.internal.concurrent.GradleThread
 import org.gradle.internal.concurrent.ParallelismConfigurationManagerFixture
 import org.gradle.internal.operations.BuildOperationContext
 import org.gradle.internal.operations.BuildOperationQueueFactory
+import org.gradle.internal.operations.BuildOperationRef
 import org.gradle.internal.operations.CallableBuildOperation
 import org.gradle.internal.operations.DefaultBuildOperationIdFactory
 import org.gradle.internal.operations.RunnableBuildOperation
@@ -246,7 +247,7 @@ class DefaultBuildOperationExecutorTest extends ConcurrentSpec {
         GradleThread.setManaged()
 
         and:
-        BuildOperationState parent
+        BuildOperationRef parent
         def id1
         def id2
 
@@ -319,7 +320,7 @@ class DefaultBuildOperationExecutorTest extends ConcurrentSpec {
     }
 
     def "cannot start child operation when parent has completed"() {
-        BuildOperationState parent = null
+        BuildOperationRef parent = null
 
         given:
         operationExecutor.run(runnableBuildOperation("parent") {

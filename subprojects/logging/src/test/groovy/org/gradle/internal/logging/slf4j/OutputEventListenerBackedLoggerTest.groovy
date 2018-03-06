@@ -23,7 +23,7 @@ import org.gradle.internal.logging.events.LogEvent
 import org.gradle.internal.logging.events.OperationIdentifier
 import org.gradle.internal.logging.events.OutputEventListener
 import org.gradle.internal.operations.CurrentBuildOperationRef
-import org.gradle.internal.progress.BuildOperationState
+import org.gradle.internal.operations.BuildOperationRef
 import org.gradle.internal.time.Clock
 import org.slf4j.Marker
 import spock.lang.Specification
@@ -940,7 +940,7 @@ class OutputEventListenerBackedLoggerTest extends Specification {
 
     def "log events include build operation id"() {
         given:
-        currentBuildOperationRef.set(new BuildOperationState() {
+        currentBuildOperationRef.set(new BuildOperationRef() {
             @Override
             Object getId() {
                 new OperationIdentifier(1L)

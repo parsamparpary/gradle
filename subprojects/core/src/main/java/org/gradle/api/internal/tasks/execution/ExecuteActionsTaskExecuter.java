@@ -37,7 +37,7 @@ import org.gradle.internal.operations.BuildOperationContext;
 import org.gradle.internal.operations.BuildOperationExecutor;
 import org.gradle.internal.operations.RunnableBuildOperation;
 import org.gradle.internal.progress.BuildOperationDescriptor;
-import org.gradle.internal.progress.BuildOperationState;
+import org.gradle.internal.operations.BuildOperationRef;
 import org.gradle.internal.scopeids.id.BuildInvocationScopeId;
 import org.gradle.internal.work.AsyncWorkTracker;
 
@@ -118,7 +118,7 @@ public class ExecuteActionsTaskExecuter implements TaskExecuter {
 
             @Override
             public void run(BuildOperationContext context) {
-                BuildOperationState currentOperation = buildOperationExecutor.getCurrentOperation();
+                BuildOperationRef currentOperation = buildOperationExecutor.getCurrentOperation();
                 Throwable actionFailure = null;
                 try {
                     action.execute(task);

@@ -16,13 +16,11 @@
 
 package org.gradle.internal.operations;
 
-import org.gradle.internal.progress.BuildOperationState;
-
 public class CurrentBuildOperationPreservingRunnable implements Runnable {
 
     private final Runnable delegate;
     private final CurrentBuildOperationRef ref;
-    private final BuildOperationState buildOperation;
+    private final BuildOperationRef buildOperation;
 
     public CurrentBuildOperationPreservingRunnable(Runnable delegate) {
         this(delegate, CurrentBuildOperationRef.instance());

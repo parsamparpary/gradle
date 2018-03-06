@@ -25,7 +25,6 @@ import org.gradle.api.Action;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.logging.events.OperationIdentifier;
 import org.gradle.internal.progress.BuildOperationDescriptor;
-import org.gradle.internal.progress.BuildOperationState;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -41,8 +40,8 @@ public class TestBuildOperationExecutor implements BuildOperationExecutor {
     public final BuildOperationLog log = new BuildOperationLog();
 
     @Override
-    public BuildOperationState getCurrentOperation() {
-        return new BuildOperationState() {
+    public BuildOperationRef getCurrentOperation() {
+        return new BuildOperationRef() {
             @Override
             public Object getId() {
                 return new OperationIdentifier(1L);

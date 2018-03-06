@@ -15,32 +15,30 @@
  */
 package org.gradle.internal.operations;
 
-import org.gradle.internal.progress.BuildOperationState;
-
 import javax.annotation.Nullable;
 
 public class CurrentBuildOperationRef {
 
     private static final CurrentBuildOperationRef INSTANCE = new CurrentBuildOperationRef();
 
-    private final ThreadLocal<BuildOperationState> ref = new ThreadLocal<BuildOperationState>();
+    private final ThreadLocal<BuildOperationRef> ref = new ThreadLocal<BuildOperationRef>();
 
     public static CurrentBuildOperationRef instance() {
         return INSTANCE;
     }
 
     @Nullable
-    public BuildOperationState get() {
+    public BuildOperationRef get() {
         return ref.get();
     }
 
     @Nullable
     public Object getId() {
-        BuildOperationState operationState = get();
+        BuildOperationRef operationState = get();
         return operationState == null ? null : operationState.getId();
     }
 
-    public void set(@Nullable BuildOperationState state) {
+    public void set(@Nullable BuildOperationRef state) {
         if (state == null) {
             ref.remove();
         } else {

@@ -24,7 +24,7 @@ import org.gradle.cache.internal.CrossBuildInMemoryCacheFactory;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.event.DefaultListenerManager;
 import org.gradle.internal.operations.CurrentBuildOperationRef;
-import org.gradle.internal.progress.BuildOperationState;
+import org.gradle.internal.operations.BuildOperationRef;
 import org.gradle.internal.remote.ObjectConnection;
 import org.gradle.internal.remote.internal.hub.StreamFailureHandler;
 import org.gradle.process.internal.worker.WorkerProcessContext;
@@ -79,7 +79,7 @@ public class WorkerAction implements Action<WorkerProcessContext>, Serializable,
     }
 
     @Override
-    public void runThenStop(String methodName, Class<?>[] paramTypes, Object[] args, BuildOperationState buildOperation) {
+    public void runThenStop(String methodName, Class<?>[] paramTypes, Object[] args, BuildOperationRef buildOperation) {
         try {
             run(methodName, paramTypes, args, buildOperation);
         } finally {
@@ -88,7 +88,7 @@ public class WorkerAction implements Action<WorkerProcessContext>, Serializable,
     }
 
     @Override
-    public void run(String methodName, Class<?>[] paramTypes, Object[] args, BuildOperationState buildOperation) {
+    public void run(String methodName, Class<?>[] paramTypes, Object[] args, BuildOperationRef buildOperation) {
         if (failure != null) {
             responder.infrastructureFailed(failure);
             return;

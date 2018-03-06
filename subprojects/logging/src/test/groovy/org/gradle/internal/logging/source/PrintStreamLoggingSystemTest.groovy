@@ -21,7 +21,7 @@ import org.gradle.internal.logging.events.LogLevelChangeEvent
 import org.gradle.internal.logging.events.OutputEventListener
 import org.gradle.internal.logging.events.StyledTextOutputEvent
 import org.gradle.internal.operations.CurrentBuildOperationRef
-import org.gradle.internal.progress.BuildOperationState
+import org.gradle.internal.operations.BuildOperationRef
 import org.gradle.internal.time.Clock
 import org.gradle.util.TextUtil
 import spock.lang.Specification
@@ -74,7 +74,7 @@ class PrintStreamLoggingSystemTest extends Specification {
 
     def fillsInEventDetails() {
         given:
-        currentBuildOperationRef.set(new BuildOperationState() {
+        currentBuildOperationRef.set(new BuildOperationRef() {
             @Override
             Object getId() {
                 return 42L

@@ -16,12 +16,11 @@
 
 package org.gradle.internal.operations
 
-import org.gradle.internal.progress.BuildOperationState
 import spock.lang.Specification
 
 class CurrentBuildOperationPreservingRunnableTest extends Specification {
 
-    private static final EXPECTED_BUILD_OPERATION = new BuildOperationState() {
+    private static final EXPECTED_BUILD_OPERATION = new BuildOperationRef() {
         @Override
         Object getId() {
             1

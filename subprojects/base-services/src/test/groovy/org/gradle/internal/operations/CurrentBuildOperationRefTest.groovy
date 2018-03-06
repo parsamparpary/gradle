@@ -16,7 +16,6 @@
 
 package org.gradle.internal.operations
 
-import org.gradle.internal.progress.BuildOperationState
 import spock.lang.Specification
 import spock.util.concurrent.AsyncConditions
 
@@ -26,7 +25,7 @@ class CurrentBuildOperationRefTest extends Specification {
         given:
         def ref = new CurrentBuildOperationRef()
         def conditions = new AsyncConditions(3)
-        def op = new BuildOperationState() {
+        def op = new BuildOperationRef() {
             @Override
             Object getId() {
                 1

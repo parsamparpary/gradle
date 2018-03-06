@@ -16,6 +16,8 @@
 
 package org.gradle.internal.progress;
 
+import org.gradle.internal.operations.BuildOperationRef;
+
 import javax.annotation.Nullable;
 
 /**
@@ -101,7 +103,7 @@ public final class BuildOperationDescriptor {
         private String name;
         private String progressDisplayName;
         private Object details;
-        private BuildOperationState parent;
+        private BuildOperationRef parent;
         private BuildOperationCategory operationType = BuildOperationCategory.UNCATEGORIZED;
 
         private Builder(String displayName) {
@@ -134,7 +136,7 @@ public final class BuildOperationDescriptor {
          * the described operation will run (see: {@link org.gradle.internal.operations.BuildOperationExecutor#getCurrentOperation()}).
          * If parent ID is not set, The last started operation of the executing thread will be used as parent.
          */
-        public Builder parent(BuildOperationState parent) {
+        public Builder parent(BuildOperationRef parent) {
             this.parent = parent;
             return this;
         }
@@ -143,7 +145,7 @@ public final class BuildOperationDescriptor {
             return build(null, null);
         }
 
-        BuildOperationState getParentState() {
+        BuildOperationRef getParentState() {
             return parent;
         }
 
