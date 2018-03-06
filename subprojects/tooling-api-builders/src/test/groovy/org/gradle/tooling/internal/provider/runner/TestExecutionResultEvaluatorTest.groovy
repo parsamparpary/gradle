@@ -22,8 +22,8 @@ import org.gradle.api.internal.tasks.testing.TestCompleteEvent
 import org.gradle.api.internal.tasks.testing.TestDescriptorInternal
 import org.gradle.api.tasks.testing.TestExecutionException
 import org.gradle.api.tasks.testing.TestResult
-import org.gradle.internal.operations.BuildOperationDescriptor
 import org.gradle.internal.operations.BuildOperationCategory
+import org.gradle.internal.operations.BuildOperationDescriptor
 import org.gradle.internal.operations.OperationIdentifier
 import org.gradle.internal.operations.OperationStartEvent
 import org.gradle.tooling.internal.protocol.test.InternalJvmTestRequest
@@ -71,7 +71,7 @@ class TestExecutionResultEvaluatorTest extends Specification {
         Test method org.acme.SomeBazTest.bazMethod()"""
 
         and:
-        1 * testExecutionRequest.getTestExecutionDescriptors()>> [defaultTestDescriptor]
+        1 * testExecutionRequest.getTestExecutionDescriptors() >> [defaultTestDescriptor]
         1 * testExecutionRequest.getInternalJvmTestRequests() >> [testClassRequest, testMethodRequest, testMethodRequest2]
     }
 
@@ -92,7 +92,7 @@ class TestExecutionResultEvaluatorTest extends Specification {
 
         def testTask = Mock(TaskInternal)
         1 * testTask.getPath() >> ":someproject:someTestTask"
-        def buildOperation = new BuildOperationDescriptor(new OperationIdentifier(1), new OperationIdentifier(2), "<task>", "<task>",  "<task>", new ExecuteTaskBuildOperationDetails(testTask), BuildOperationCategory.TASK)
+        def buildOperation = new BuildOperationDescriptor(new OperationIdentifier(1), new OperationIdentifier(2), "<task>", "<task>", "<task>", new ExecuteTaskBuildOperationDetails(testTask), BuildOperationCategory.TASK)
 
         when:
         evaluator.started(buildOperation, new OperationStartEvent(0))
