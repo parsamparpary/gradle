@@ -16,32 +16,44 @@
 
 package org.gradle.internal.operations
 
+import org.gradle.internal.progress.BuildOperationState
 import spock.lang.Specification
-import spock.lang.Subject
 import spock.util.concurrent.AsyncConditions
 
-@Subject(BuildOperationIdentifierRegistry)
-class BuildOperationIdentifierRegistryTest extends Specification {
+class CurrentBuildOperationRefTest extends Specification {
+
     def "able to set and retrieve current operation across threads"() {
         given:
+        def ref = new CurrentBuildOperationRef()
         def conditions = new AsyncConditions(3)
+        def op = new BuildOperationState() {
+            @Override
+            Object getId() {
+                1
+            }
+
+            @Override
+            Object getParentId() {
+                2
+            }
+        }
 
         when:
         def thread = Thread.start {
             // expect:
-            conditions.evaluate { BuildOperationIdentifierRegistry.getCurrentOperationIdentifier() == null }
+            conditions.evaluate { ref.get() == null }
 
             // when:
-            BuildOperationIdentifierRegistry.setCurrentOperationIdentifier(1L)
+            ref.set(op)
 
             // then:
-            conditions.evaluate { BuildOperationIdentifierRegistry.getCurrentOperationIdentifier() == 1L }
+            conditions.evaluate { ref.get().is(op) }
 
             // when:
-            BuildOperationIdentifierRegistry.clearCurrentOperationIdentifier()
+            ref.clear()
 
             // then:
-            conditions.evaluate { BuildOperationIdentifierRegistry.getCurrentOperationIdentifier() == null }
+            conditions.evaluate { ref.get() == null }
         }
 
         then:

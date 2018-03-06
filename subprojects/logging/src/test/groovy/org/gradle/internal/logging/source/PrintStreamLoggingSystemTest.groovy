@@ -18,15 +18,16 @@ package org.gradle.internal.logging.source
 
 import org.gradle.api.logging.LogLevel
 import org.gradle.internal.logging.events.LogLevelChangeEvent
-import org.gradle.internal.logging.events.OperationIdentifier
 import org.gradle.internal.logging.events.OutputEventListener
 import org.gradle.internal.logging.events.StyledTextOutputEvent
-import org.gradle.internal.operations.BuildOperationIdentifierRegistry
+import org.gradle.internal.operations.CurrentBuildOperationRef
+import org.gradle.internal.progress.BuildOperationState
 import org.gradle.internal.time.Clock
 import org.gradle.util.TextUtil
 import spock.lang.Specification
 
 class PrintStreamLoggingSystemTest extends Specification {
+
     private final OutputStream original = new ByteArrayOutputStream()
     private final PrintStream originalStream = new PrintStream(original)
     private PrintStream stream = originalStream
@@ -41,6 +42,8 @@ class PrintStreamLoggingSystemTest extends Specification {
             stream = printStream
         }
     }
+
+    private final CurrentBuildOperationRef currentBuildOperationRef = CurrentBuildOperationRef.instance()
 
     def onReplacesOriginalStreamAndRemovesWhenRestored() {
         when:
@@ -63,15 +66,25 @@ class PrintStreamLoggingSystemTest extends Specification {
         stream.println('info')
 
         then:
-        1 * listener.onOutput({it instanceof LogLevelChangeEvent && it.newLogLevel == LogLevel.INFO})
-        1 * listener.onOutput({it instanceof StyledTextOutputEvent && it.spans[0].text == withEOL('info')})
+        1 * listener.onOutput({ it instanceof LogLevelChangeEvent && it.newLogLevel == LogLevel.INFO })
+        1 * listener.onOutput({ it instanceof StyledTextOutputEvent && it.spans[0].text == withEOL('info') })
         original.toString() == ''
         0 * listener._
     }
 
     def fillsInEventDetails() {
         given:
-        BuildOperationIdentifierRegistry.setCurrentOperationIdentifier(new OperationIdentifier(42L))
+        currentBuildOperationRef.set(new BuildOperationState() {
+            @Override
+            Object getId() {
+                return 42L
+            }
+
+            @Override
+            Object getParentId() {
+                return 1
+            }
+        })
 
         when:
         loggingSystem.startCapture()
@@ -87,7 +100,7 @@ class PrintStreamLoggingSystemTest extends Specification {
         })
 
         cleanup:
-        BuildOperationIdentifierRegistry.clearCurrentOperationIdentifier()
+        currentBuildOperationRef.clear()
     }
 
     def onChangesLogLevelsWhenAlreadyCapturing() {
@@ -99,8 +112,8 @@ class PrintStreamLoggingSystemTest extends Specification {
         stream.println('info')
 
         then:
-        1 * listener.onOutput({it instanceof LogLevelChangeEvent && it.newLogLevel == LogLevel.DEBUG})
-        1 * listener.onOutput({it instanceof StyledTextOutputEvent && it.spans[0].text == withEOL('info')})
+        1 * listener.onOutput({ it instanceof LogLevelChangeEvent && it.newLogLevel == LogLevel.DEBUG })
+        1 * listener.onOutput({ it instanceof StyledTextOutputEvent && it.spans[0].text == withEOL('info') })
         original.toString() == ''
         0 * listener._
     }
@@ -129,7 +142,7 @@ class PrintStreamLoggingSystemTest extends Specification {
         loggingSystem.restore(snapshot)
 
         then:
-        1 * listener.onOutput({it instanceof StyledTextOutputEvent && it.spans[0].text == 'info'})
+        1 * listener.onOutput({ it instanceof StyledTextOutputEvent && it.spans[0].text == 'info' })
         original.toString() == ''
         0 * listener._
     }
@@ -188,8 +201,8 @@ info-2
         stream.println('info')
 
         then:
-        1 * listener.onOutput({it instanceof LogLevelChangeEvent && it.newLogLevel == LogLevel.WARN})
-        1 * listener.onOutput({it.spans[0].text == withEOL('info')})
+        1 * listener.onOutput({ it instanceof LogLevelChangeEvent && it.newLogLevel == LogLevel.WARN })
+        1 * listener.onOutput({ it.spans[0].text == withEOL('info') })
         original.toString() == ''
         0 * listener._
     }
@@ -205,8 +218,8 @@ info-2
         stream.println('info')
 
         then:
-        1 * listener.onOutput({it instanceof LogLevelChangeEvent && it.newLogLevel == LogLevel.WARN})
-        1 * listener.onOutput({it.spans[0].text == withEOL('info')})
+        1 * listener.onOutput({ it instanceof LogLevelChangeEvent && it.newLogLevel == LogLevel.WARN })
+        1 * listener.onOutput({ it.spans[0].text == withEOL('info') })
         original.toString() == ''
         0 * listener._
     }

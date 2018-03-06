@@ -16,29 +16,34 @@
 
 package org.gradle.internal.operations;
 
-public class BuildOperationIdentifierPreservingRunnable implements Runnable {
-    private final Runnable delegate;
-    private final Object buildOperationId;
+import org.gradle.internal.progress.BuildOperationState;
 
-    public BuildOperationIdentifierPreservingRunnable(Runnable delegate) {
-        this(delegate, BuildOperationIdentifierRegistry.getCurrentOperationIdentifier());
+public class CurrentBuildOperationPreservingRunnable implements Runnable {
+
+    private final Runnable delegate;
+    private final CurrentBuildOperationRef ref;
+    private final BuildOperationState buildOperation;
+
+    public CurrentBuildOperationPreservingRunnable(Runnable delegate) {
+        this(delegate, CurrentBuildOperationRef.instance());
     }
 
-    BuildOperationIdentifierPreservingRunnable(Runnable delegate, Object buildOperationId) {
+    CurrentBuildOperationPreservingRunnable(Runnable delegate, CurrentBuildOperationRef ref) {
         this.delegate = delegate;
-        this.buildOperationId = buildOperationId;
+        this.ref = ref;
+        this.buildOperation = ref.get();
     }
 
     @Override
     public void run() {
-        if (buildOperationId == null) {
+        if (buildOperation == null) {
             delegate.run();
         } else {
-            BuildOperationIdentifierRegistry.setCurrentOperationIdentifier(buildOperationId);
+            ref.set(buildOperation);
             try {
                 delegate.run();
             } finally {
-                BuildOperationIdentifierRegistry.clearCurrentOperationIdentifier();
+                ref.clear();
             }
         }
     }

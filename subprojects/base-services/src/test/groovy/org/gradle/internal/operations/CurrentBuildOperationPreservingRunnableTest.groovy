@@ -16,16 +16,33 @@
 
 package org.gradle.internal.operations
 
+import org.gradle.internal.progress.BuildOperationState
 import spock.lang.Specification
 
-class BuildOperationIdentifierPreservingRunnableTest extends Specification {
-    private static final EXPECTED_BUILD_OPERATION_IDENTIFIER = "42"
+class CurrentBuildOperationPreservingRunnableTest extends Specification {
+
+    private static final EXPECTED_BUILD_OPERATION = new BuildOperationState() {
+        @Override
+        Object getId() {
+            1
+        }
+
+        @Override
+        Object getParentId() {
+            2
+        }
+    }
+
     def delegate = Mock(Runnable)
-    def runner = new BuildOperationIdentifierPreservingRunnable(delegate, EXPECTED_BUILD_OPERATION_IDENTIFIER)
+    def currentBuildOperationRef = new CurrentBuildOperationRef()
+
+    def runner() {
+        new CurrentBuildOperationPreservingRunnable(delegate, currentBuildOperationRef)
+    }
 
     def "forward execution to delegate runnable"() {
         when:
-        runner.run()
+        runner().run()
 
         then:
         1 * delegate.run()
@@ -33,22 +50,16 @@ class BuildOperationIdentifierPreservingRunnableTest extends Specification {
     }
 
     def "preserve build operation identifier during execution of the delegate runnable"() {
-        given: "save previous build operation id"
-        def previousBuildOperationId = BuildOperationIdentifierRegistry.currentOperationIdentifier
-
-        and: "clear current build operation id to simulate a new thread state"
-        BuildOperationIdentifierRegistry.clearCurrentOperationIdentifier()
+        given:
+        currentBuildOperationRef.set(EXPECTED_BUILD_OPERATION)
 
         when:
-        runner.run()
+        runner().run()
 
         then:
         1 * delegate.run() >> {
-            assert BuildOperationIdentifierRegistry.currentOperationIdentifier == EXPECTED_BUILD_OPERATION_IDENTIFIER
+            assert currentBuildOperationRef.get() == EXPECTED_BUILD_OPERATION
         }
-        BuildOperationIdentifierRegistry.currentOperationIdentifier != EXPECTED_BUILD_OPERATION_IDENTIFIER
-
-        cleanup:
-        BuildOperationIdentifierRegistry.currentOperationIdentifier = previousBuildOperationId
+        currentBuildOperationRef.get() != EXPECTED_BUILD_OPERATION
     }
 }
