@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.progress;
-
-import org.gradle.internal.operations.BuildOperationRef;
+package org.gradle.internal.operations;
 
 import javax.annotation.Nullable;
 
@@ -24,15 +22,15 @@ import javax.annotation.Nullable;
  * Meta-data about a build operation.
  */
 public final class BuildOperationDescriptor {
-    private final Object id;
-    private final Object parentId;
+    private final OperationIdentifier id;
+    private final OperationIdentifier parentId;
     private final String displayName;
     private final String name;
     private final String progressDisplayName;
     private final Object details;
     private final BuildOperationCategory operationType;
 
-    private BuildOperationDescriptor(Object id, Object parentId, String name, String displayName, String progressDisplayName, Object details, BuildOperationCategory operationType) {
+    private BuildOperationDescriptor(OperationIdentifier id, OperationIdentifier parentId, String name, String displayName, String progressDisplayName, Object details, BuildOperationCategory operationType) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
@@ -42,7 +40,7 @@ public final class BuildOperationDescriptor {
         this.operationType = operationType;
     }
 
-    public Object getId() {
+    public OperationIdentifier getId() {
         return id;
     }
 
@@ -86,7 +84,7 @@ public final class BuildOperationDescriptor {
      * The parent for the operation, if any. When null, the operation of the current thread is used.
      */
     @Nullable
-    public Object getParentId() {
+    public OperationIdentifier getParentId() {
         return parentId;
     }
 
@@ -149,7 +147,7 @@ public final class BuildOperationDescriptor {
             return parent;
         }
 
-        public BuildOperationDescriptor build(@Nullable Object id, @Nullable Object defaultParentId) {
+        public BuildOperationDescriptor build(@Nullable OperationIdentifier id, @Nullable OperationIdentifier defaultParentId) {
             return new BuildOperationDescriptor(id, parent == null ? defaultParentId : parent.getId(), name, displayName, progressDisplayName, details, operationType);
         }
     }

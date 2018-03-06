@@ -25,17 +25,8 @@ class CurrentBuildOperationRefTest extends Specification {
         given:
         def ref = new CurrentBuildOperationRef()
         def conditions = new AsyncConditions(3)
-        def op = new BuildOperationRef() {
-            @Override
-            Object getId() {
-                1
-            }
 
-            @Override
-            Object getParentId() {
-                2
-            }
-        }
+        def op = new DefaultBuildOperationRef(new OperationIdentifier(1), new OperationIdentifier(2))
 
         when:
         def thread = Thread.start {

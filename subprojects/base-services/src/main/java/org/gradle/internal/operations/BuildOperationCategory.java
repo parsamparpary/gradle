@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.gradle.internal.operations;
 
-package org.gradle.internal.progress;
-
-public final class OperationStartEvent {
-    private final long startTime;
-
-    public OperationStartEvent(long startTime) {
-        this.startTime = startTime;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
+/**
+ * Classifies a build operation such that executors and event listeners can
+ * react differently depending on this type.
+ *
+ * @since 4.0
+ */
+public enum BuildOperationCategory {
+    CONFIGURE_PROJECT, TASK, UNCATEGORIZED
 }

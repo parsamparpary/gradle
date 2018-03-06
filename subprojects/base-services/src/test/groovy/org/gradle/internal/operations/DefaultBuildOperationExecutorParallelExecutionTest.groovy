@@ -24,10 +24,6 @@ import org.gradle.internal.concurrent.ManagedExecutor
 import org.gradle.internal.concurrent.ParallelismConfigurationManager
 import org.gradle.internal.concurrent.ParallelismConfigurationManagerFixture
 import org.gradle.internal.exceptions.DefaultMultiCauseException
-import org.gradle.internal.logging.events.OperationIdentifier
-import org.gradle.internal.progress.BuildOperationDescriptor
-import org.gradle.internal.progress.BuildOperationListener
-import org.gradle.internal.progress.DefaultBuildOperationExecutor
 import org.gradle.internal.progress.NoOpProgressLoggerFactory
 import org.gradle.internal.resources.DefaultResourceLockCoordinationService
 import org.gradle.internal.resources.ResourceLockCoordinationService

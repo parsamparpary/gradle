@@ -33,7 +33,7 @@ public class CurrentBuildOperationRef {
     }
 
     @Nullable
-    public Object getId() {
+    public OperationIdentifier getId() {
         BuildOperationRef operationState = get();
         return operationState == null ? null : operationState.getId();
     }

@@ -16,6 +16,7 @@
 
 package org.gradle.internal.logging.events
 
+import org.gradle.internal.operations.OperationIdentifier
 import spock.lang.Specification
 
 class OperationIdentifierTest extends Specification {

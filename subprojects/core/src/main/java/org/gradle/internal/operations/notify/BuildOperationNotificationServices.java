@@ -16,7 +16,7 @@
 
 package org.gradle.internal.operations.notify;
 
-import org.gradle.internal.progress.BuildOperationListenerManager;
+import org.gradle.internal.operations.BuildOperationListenerManager;
 
 /**
  * Services enabling build operation notifications.

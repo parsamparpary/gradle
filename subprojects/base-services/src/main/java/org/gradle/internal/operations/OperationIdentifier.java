@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.logging.events;
+package org.gradle.internal.operations;
 
 import com.google.common.base.Preconditions;
 
 import java.io.Serializable;
 
 public class OperationIdentifier implements Serializable {
+
     private final long id;
 
     public OperationIdentifier(long id) {

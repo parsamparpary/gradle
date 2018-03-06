@@ -20,10 +20,10 @@ import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.internal.logging.events.LogEvent
-import org.gradle.internal.logging.events.OperationIdentifier
 import org.gradle.internal.logging.events.OutputEventListener
 import org.gradle.internal.operations.CurrentBuildOperationRef
-import org.gradle.internal.operations.BuildOperationRef
+import org.gradle.internal.operations.DefaultBuildOperationRef
+import org.gradle.internal.operations.OperationIdentifier
 import org.gradle.internal.time.Clock
 import org.slf4j.Marker
 import spock.lang.Specification
@@ -940,23 +940,16 @@ class OutputEventListenerBackedLoggerTest extends Specification {
 
     def "log events include build operation id"() {
         given:
-        currentBuildOperationRef.set(new BuildOperationRef() {
-            @Override
-            Object getId() {
-                new OperationIdentifier(1L)
-            }
-
-            @Override
-            Object getParentId() {
-                2L
-            }
-        })
+        currentBuildOperationRef.set(new DefaultBuildOperationRef(
+            new OperationIdentifier(42),
+            new OperationIdentifier(1)
+        ))
 
         when:
         logger().error('message')
 
         then:
-        singleLogEvent().message('message').logLevel(ERROR).operationIdentifier(new OperationIdentifier(1L)).eventExpected(true)
+        singleLogEvent().message('message').logLevel(ERROR).operationIdentifier(new OperationIdentifier(42)).eventExpected(true)
 
         cleanup:
         currentBuildOperationRef.clear()

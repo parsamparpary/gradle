@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.progress;
+package org.gradle.internal.operations;
 
-/**
- * Manages listeners of build operations.
- *
- * Be aware that there are two instances of this within the services hierarchy.
- * One is global scoped (used by TAPI infrastructure).
- * The other is build session scoped (used by build operation notifications).
- *
- * @since 3.5
- */
-public interface BuildOperationListenerManager {
+public final class OperationStartEvent {
+    private final long startTime;
 
-    void addListener(BuildOperationListener listener);
+    public OperationStartEvent(long startTime) {
+        this.startTime = startTime;
+    }
 
-    void removeListener(BuildOperationListener listener);
-
+    public long getStartTime() {
+        return startTime;
+    }
 }

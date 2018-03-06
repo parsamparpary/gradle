@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.progress;
+package org.gradle.internal.operations;
 
-import javax.annotation.Nullable;
+/**
+ * Manages listeners of build operations.
+ *
+ * Be aware that there are two instances of this within the services hierarchy.
+ * One is global scoped (used by TAPI infrastructure).
+ * The other is build session scoped (used by build operation notifications).
+ *
+ * @since 3.5
+ */
+public interface BuildOperationListenerManager {
 
-public final class OperationProgressEvent {
+    void addListener(BuildOperationListener listener);
 
-    private final long time;
-    private final Object details;
+    void removeListener(BuildOperationListener listener);
 
-    public OperationProgressEvent(long time, @Nullable Object details) {
-        this.time = time;
-        this.details = details;
-    }
-
-    public long getTime() {
-        return time;
-    }
-
-    @Nullable
-    public Object getDetails() {
-        return details;
-    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.internal.progress;
+package org.gradle.internal.operations;
 
 /**
- * Classifies a build operation such that executors and event listeners can
- * react differently depending on this type.
+ * A listener that is notified as build operations are executed via a {@link org.gradle.internal.operations.BuildOperationExecutor}.
  *
- * @since 4.0
+ * @since 3.5
  */
-public enum BuildOperationCategory {
-    CONFIGURE_PROJECT, TASK, UNCATEGORIZED
+public interface BuildOperationListener {
+
+    void started(BuildOperationDescriptor buildOperation, OperationStartEvent startEvent);
+
+    void progress(BuildOperationDescriptor buildOperation, OperationProgressEvent progressEvent);
+
+    void finished(BuildOperationDescriptor buildOperation, OperationFinishEvent finishEvent);
+
 }

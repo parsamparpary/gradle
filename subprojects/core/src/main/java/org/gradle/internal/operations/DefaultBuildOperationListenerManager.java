@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.progress;
+package org.gradle.internal.operations;
 
 import org.gradle.internal.event.ListenerManager;
 

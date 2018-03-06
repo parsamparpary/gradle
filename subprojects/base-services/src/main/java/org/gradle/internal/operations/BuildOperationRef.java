@@ -20,8 +20,8 @@ import java.io.Serializable;
 
 public interface BuildOperationRef extends Serializable {
 
-    Object getId();
+    OperationIdentifier getId();
 
-    Object getParentId();
+    OperationIdentifier getParentId();
 
 }

@@ -18,13 +18,13 @@ package org.gradle.internal.operations.notify
 
 import org.gradle.api.internal.GradleInternal
 import org.gradle.internal.event.DefaultListenerManager
-import org.gradle.internal.progress.BuildOperationDescriptor
-import org.gradle.internal.progress.BuildOperationListener
-import org.gradle.internal.progress.BuildOperationListenerManager
-import org.gradle.internal.progress.DefaultBuildOperationListenerManager
-import org.gradle.internal.progress.OperationFinishEvent
-import org.gradle.internal.progress.OperationProgressEvent
-import org.gradle.internal.progress.OperationStartEvent
+import org.gradle.internal.operations.BuildOperationDescriptor
+import org.gradle.internal.operations.BuildOperationListener
+import org.gradle.internal.operations.BuildOperationListenerManager
+import org.gradle.internal.operations.DefaultBuildOperationListenerManager
+import org.gradle.internal.operations.OperationFinishEvent
+import org.gradle.internal.operations.OperationProgressEvent
+import org.gradle.internal.operations.OperationStartEvent
 import org.gradle.testing.internal.util.Specification
 
 class BuildOperationNotificationBridgeTest extends Specification {

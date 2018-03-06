@@ -48,7 +48,7 @@ import org.gradle.internal.operations.BuildOperationContext;
 import org.gradle.internal.operations.BuildOperationExecutor;
 import org.gradle.internal.operations.CallableBuildOperation;
 import org.gradle.internal.operations.notify.BuildOperationNotificationBridge;
-import org.gradle.internal.progress.BuildOperationDescriptor;
+import org.gradle.internal.operations.BuildOperationDescriptor;
 import org.gradle.internal.progress.BuildProgressFilter;
 import org.gradle.internal.progress.BuildProgressLogger;
 import org.gradle.internal.progress.LoggerProvider;

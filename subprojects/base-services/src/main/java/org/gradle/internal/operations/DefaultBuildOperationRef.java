@@ -17,21 +17,21 @@ package org.gradle.internal.operations;
 
 public class DefaultBuildOperationRef implements BuildOperationRef {
 
-    private final Object id;
-    private final Object parentId;
+    private final OperationIdentifier id;
+    private final OperationIdentifier parentId;
 
-    public DefaultBuildOperationRef(Object id, Object parentId) {
+    public DefaultBuildOperationRef(OperationIdentifier id, OperationIdentifier parentId) {
         this.id = id;
         this.parentId = parentId;
     }
 
     @Override
-    public Object getId() {
+    public OperationIdentifier getId() {
         return id;
     }
 
     @Override
-    public Object getParentId() {
+    public OperationIdentifier getParentId() {
         return parentId;
     }
 

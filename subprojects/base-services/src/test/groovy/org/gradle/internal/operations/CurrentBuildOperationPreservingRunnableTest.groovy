@@ -20,17 +20,7 @@ import spock.lang.Specification
 
 class CurrentBuildOperationPreservingRunnableTest extends Specification {
 
-    private static final EXPECTED_BUILD_OPERATION = new BuildOperationRef() {
-        @Override
-        Object getId() {
-            1
-        }
-
-        @Override
-        Object getParentId() {
-            2
-        }
-    }
+    private static final EXPECTED_BUILD_OPERATION = new DefaultBuildOperationRef(new OperationIdentifier(42L), new OperationIdentifier(1))
 
     def delegate = Mock(Runnable)
     def currentBuildOperationRef = new CurrentBuildOperationRef()
