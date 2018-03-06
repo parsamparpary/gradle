@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.logging.events
+package org.gradle.internal.operations
 
-import org.gradle.internal.operations.OperationIdentifier
 import spock.lang.Specification
 
 class OperationIdentifierTest extends Specification {

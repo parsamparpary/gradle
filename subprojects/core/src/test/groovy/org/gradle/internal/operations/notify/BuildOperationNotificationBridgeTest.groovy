@@ -22,6 +22,7 @@ import org.gradle.internal.operations.BuildOperationDescriptor
 import org.gradle.internal.operations.BuildOperationListenerManager
 import org.gradle.internal.operations.DefaultBuildOperationListenerManager
 import org.gradle.internal.operations.OperationFinishEvent
+import org.gradle.internal.operations.OperationIdentifier
 import org.gradle.internal.operations.OperationProgressEvent
 import org.gradle.internal.operations.OperationStartEvent
 import org.gradle.testing.internal.util.Specification
@@ -98,7 +99,7 @@ class BuildOperationNotificationBridgeTest extends Specification {
 
         then:
         1 * listener.started(_) >> { BuildOperationStartedNotification n ->
-            assert n.notificationOperationId == 1
+            assert n.notificationOperationId == new OperationIdentifier(1)
             assert n.notificationOperationDetails.is(d1.details)
             assert n.notificationOperationStartedTimestamp == 0
         }
@@ -174,7 +175,10 @@ class BuildOperationNotificationBridgeTest extends Specification {
     }
 
     BuildOperationDescriptor d(Long id, Long parentId, Long details) {
-        BuildOperationDescriptor.displayName(id.toString()).details(details).build(id, parentId)
+        BuildOperationDescriptor.displayName(id.toString()).details(details).build(
+            new OperationIdentifier(id),
+            parentId == null ? null : new OperationIdentifier(parentId)
+        )
     }
 
     def "parentId is of last parent that a notification was sent for"() {
